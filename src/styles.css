@@ -36,13 +36,83 @@ img{max-width:100%;display:block}
   display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 16px;
 }
 
-.brand{font-weight:800;letter-spacing:.3px;color:var(--azur)}
+.brand{font-weight:800;letter-spacing:.3px;color:var(--azur);font-size:1.2rem}
 
 .links{display:flex;gap:10px;flex-wrap:wrap}
 
-.nav a{padding:8px 12px;border-radius:10px}
+.nav a{padding:8px 12px;border-radius:10px;transition:all 0.2s}
 
 .nav a.active{background:var(--azur);color:#fff}
+
+/* Menu burger - toujours visible */
+.menu-burger{
+  display:flex !important;
+  background:none;
+  border:none;
+  cursor:pointer;
+  padding:8px;
+  flex-direction:column;
+  gap:4px;
+  z-index:100;
+}
+
+.menu-burger span{
+  width:24px;
+  height:3px;
+  background:var(--azur);
+  border-radius:2px;
+  transition:all 0.3s;
+  display:block;
+}
+
+.links{
+  position:fixed;
+  top:60px;
+  right:-100%;
+  width:280px;
+  max-width:80vw;
+  height:calc(100vh - 60px);
+  background:#fff;
+  flex-direction:column;
+  padding:20px;
+  box-shadow:-4px 0 20px rgba(0,0,0,0.1);
+  transition:right 0.3s ease;
+  z-index:45;
+  overflow-y:auto;
+  gap:0;
+}
+
+.links.open{right:0}
+
+.links a{
+  width:100%;
+  padding:16px;
+  border-radius:8px;
+  margin-bottom:8px;
+  text-align:left;
+  border-bottom:1px solid var(--bord);
+  color:var(--encre);
+}
+
+.links a:last-child{border-bottom:none}
+
+.links a.active{
+  background:var(--azur);
+  color:#fff;
+}
+
+.menu-overlay{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  background:rgba(0,0,0,0.5);
+  z-index:40;
+  display:none;
+}
+
+.menu-overlay.active{display:block}
 
 .footer{border-top:1px solid var(--bord);padding:18px;text-align:center;color:var(--gris);background:#fff}
 
@@ -106,9 +176,7 @@ img{max-width:100%;display:block}
 
 /* Responsive général */
 @media(max-width:768px){
-  .nav{flex-direction:column;align-items:stretch}
-  .links{flex-direction:column;gap:4px}
-  .nav a{text-align:center}
+  .nav{flex-direction:row;align-items:center}
   h1{font-size:2rem !important}
   h2{font-size:1.5rem !important}
   .pills{flex-direction:column}
