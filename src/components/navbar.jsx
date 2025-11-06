@@ -1,9 +1,17 @@
 import { NavLink } from 'react-router-dom'
 import { useState } from 'react'
+import { getCurrentUser } from '../services/api.js'
 
 export default function Navbar() {
   const hotel = JSON.parse(localStorage.getItem('sudora_hotel') || 'null')
+  const user = getCurrentUser()
   const [menuOpen, setMenuOpen] = useState(false)
+
+  function handleLogout(){
+    localStorage.removeItem('sudora_user')
+    localStorage.removeItem('sudora_profile')
+    window.location.href = '/'
+  }
 
   return (
     <header className="nav">
@@ -34,6 +42,16 @@ export default function Navbar() {
         <NavLink to="/bookings" onClick={() => setMenuOpen(false)}>Mes billets</NavLink>
         <NavLink to="/profile" onClick={() => setMenuOpen(false)}>Profil</NavLink>
         <NavLink to="/admin" onClick={() => setMenuOpen(false)}>Gestion</NavLink>
+        {user ? (
+          <button
+            className="nav-link-button"
+            onClick={() => { handleLogout(); setMenuOpen(false); }}
+          >
+            Déconnexion
+          </button>
+        ) : (
+          <NavLink to="/login" onClick={() => setMenuOpen(false)}>Connexion</NavLink>
+        )}
         {hotel ? (
           <NavLink to="/hotel/dashboard" onClick={() => setMenuOpen(false)}>Extranet</NavLink>
         ) : (

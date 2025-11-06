@@ -75,6 +75,9 @@ const seed = {
     { code:'ETE2025', discount:10, type:'percent', validUntil:'2025-09-30', description:'10% de réduction été 2025' },
     { code:'HOTEL20', discount:20, type:'percent', validUntil:'2025-12-31', description:'20% de réduction pour hôtels partenaires' },
     { code:'FAMILLE15', discount:15, type:'percent', validUntil:'2025-08-31', description:'15% de réduction famille' }
+  ],
+  users: [
+    { id:'U001', email:'testeuse@sudora.fr', password:'test123', name:'Testeuse Sudora', phone:'06 12 34 56 78', createdAt:'2025-01-01T00:00:00.000Z' }
   ]
 }
 
@@ -197,4 +200,49 @@ export function getBooking(id){
 export function validatePromoCode(code){
   const promo = (read().promoCodes||[]).find(p=>p.code===code && new Date(p.validUntil) > new Date())
   return promo || null
+}
+
+// Authentification utilisateur
+export function registerUser(email, password, name, phone){
+  const db = read()
+  if(!db.users){ db.users = [] }
+  
+  // Vérifier si l'utilisateur existe déjà
+  if(db.users.find(u => u.email === email)){
+    return { success: false, error: 'Cet email est déjà utilisé' }
+  }
+  
+  const user = {
+    id: 'U' + Date.now(),
+    email,
+    password, // En production, il faudrait hasher le mot de passe
+    name,
+    phone,
+    createdAt: new Date().toISOString()
+  }
+  
+  db.users.push(user)
+  write(db)
+  
+  return { success: true, user: { id: user.id, email: user.email, name: user.name, phone: user.phone } }
+}
+
+export function loginUser(email, password){
+  const db = read()
+  const users = db.users || []
+  const user = users.find(u => u.email === email && u.password === password)
+  
+  if(user){
+    return { success: true, user: { id: user.id, email: user.email, name: user.name, phone: user.phone } }
+  }
+  
+  return { success: false, error: 'Email ou mot de passe incorrect' }
+}
+
+export function getCurrentUser(){
+  try {
+    return JSON.parse(localStorage.getItem('sudora_user') || 'null')
+  } catch {
+    return null
+  }
 }

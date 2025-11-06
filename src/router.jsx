@@ -13,6 +13,18 @@ import HotelLogin from './pages/hotel-login.jsx'
 import HotelDashboard from './pages/hotel-dashboard.jsx'
 import HotelBooking from './pages/hotel-booking.jsx'
 import BookingDetail from './pages/booking-detail.jsx'
+import Login from './pages/login.jsx'
+import { getCurrentUser } from './services/api.js'
+import { Navigate } from 'react-router-dom'
+
+// Composant pour protéger les routes
+function ProtectedRoute({ children }) {
+  const user = getCurrentUser()
+  if (!user) {
+    return <Navigate to="/login" replace />
+  }
+  return children
+}
 
 export function AppRoutes() {
   return (
@@ -20,8 +32,17 @@ export function AppRoutes() {
       <Route path="/" element={<Home />} />
       <Route path="/activities" element={<Activities />} />
       <Route path="/hotels" element={<Hotels />} />
-      <Route path="/bookings" element={<Bookings />} />
-      <Route path="/profile" element={<Profile />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/bookings" element={
+        <ProtectedRoute>
+          <Bookings />
+        </ProtectedRoute>
+      } />
+      <Route path="/profile" element={
+        <ProtectedRoute>
+          <Profile />
+        </ProtectedRoute>
+      } />
       <Route path="/admin" element={<Admin />} />
       <Route path="/results" element={<Results />} />
       <Route path="/activity/:id" element={<Activity />} />

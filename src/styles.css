@@ -156,6 +156,39 @@ section > div[style*="maxWidth"]{
   color:#fff;
 }
 
+.nav-link-button{
+  background:none;
+  border:none;
+  color:var(--encre);
+  cursor:pointer;
+  padding:16px;
+  font-size:0.95rem;
+  font-weight:600;
+  text-align:left;
+  width:100%;
+  border-radius:8px;
+  transition:all 0.2s;
+  font-family:inherit;
+  margin-bottom:8px;
+  border-bottom:1px solid var(--bord);
+}
+
+.nav-link-button:hover{
+  background:rgba(43,116,255,0.08);
+  color:var(--azur);
+}
+
+@media(min-width:769px){
+  .nav-link-button{
+    width:auto;
+    text-align:center;
+    padding:8px 12px;
+    margin-bottom:0;
+    border-bottom:none;
+    border-radius:10px;
+  }
+}
+
 .menu-overlay{
   position:fixed;
   top:0;
