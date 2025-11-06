@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { listActivities } from '../services/api.js'
-import { Input, Select, Pill, Card } from '../components/ui.jsx'
+import { Input, Select, Card } from '../components/ui.jsx'
 
 const CATS = [
   {id:'', label:'Toutes', icon:'🌟'},
@@ -53,23 +53,62 @@ export default function Activities() {
           boxShadow: 'var(--shadow)'
         }}>
           <div style={{marginBottom: 20}}>
-            <div className="pills" style={{gap: 12}}>
+            <div style={{
+              display: 'flex',
+              gap: 0,
+              borderBottom: '2px solid var(--bord)',
+              overflowX: 'auto',
+              WebkitOverflowScrolling: 'touch',
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none',
+              paddingBottom: 0
+            }}
+            className="tabs-container"
+            >
+              <style>{`
+                .tabs-container::-webkit-scrollbar {
+                  display: none;
+                }
+              `}</style>
               {CATS.map(cat => (
-                <Pill
+                <button
                   key={cat.id}
-                  active={category === cat.id}
                   onClick={() => setCategory(cat.id)}
                   style={{
-                    padding: '12px 20px',
-                    fontSize: '1rem',
+                    padding: '14px 20px',
+                    fontSize: '0.95rem',
+                    fontWeight: category === cat.id ? 700 : 600,
+                    background: category === cat.id ? 'var(--azur)' : 'transparent',
+                    border: 'none',
+                    borderBottom: category === cat.id ? '3px solid var(--azur)' : '3px solid transparent',
+                    color: category === cat.id ? '#fff' : 'var(--gris)',
+                    cursor: 'pointer',
+                    whiteSpace: 'nowrap',
                     display: 'flex',
                     alignItems: 'center',
-                    gap: 8
+                    gap: 8,
+                    transition: 'all 0.2s',
+                    position: 'relative',
+                    bottom: '-2px',
+                    borderRadius: '8px 8px 0 0',
+                    marginRight: 4
+                  }}
+                  onMouseEnter={(e) => {
+                    if (category !== cat.id) {
+                      e.currentTarget.style.color = 'var(--azur)';
+                      e.currentTarget.style.background = 'rgba(43,116,255,0.08)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (category !== cat.id) {
+                      e.currentTarget.style.color = 'var(--gris)';
+                      e.currentTarget.style.background = 'transparent';
+                    }
                   }}
                 >
-                  <span style={{fontSize: '1.3rem'}}>{cat.icon}</span>
-                  {cat.label}
-                </Pill>
+                  <span style={{fontSize: '1.2rem'}}>{cat.icon}</span>
+                  <span>{cat.label}</span>
+                </button>
               ))}
             </div>
           </div>

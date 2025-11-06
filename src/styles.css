@@ -201,7 +201,7 @@ img{max-width:100%;display:block}
 @media(min-width:841px){
   .searchbar-responsive.searchbar-2{grid-template-columns:2fr 1.5fr}
   .searchbar-responsive.searchbar-3{grid-template-columns:2fr 1.5fr 1.2fr}
-  .searchbar-responsive.searchbar-4{grid-template-columns:2fr 1.5fr 1.2fr 1.2fr}
+  .searchbar-responsive.searchbar-4{grid-template-columns:2fr 1.5fr 1.2fr 1fr}
   .searchbar-responsive.searchbar-5{grid-template-columns:2fr 1.5fr 1.2fr 1.2fr 1fr}
   .searchbar-responsive.searchbar-4-auto{grid-template-columns:2fr 1.5fr 1.2fr auto}
 }

@@ -3,6 +3,14 @@ import { searchAll } from '../services/api.js'
 import { Select, Input, Button, Card } from '../components/ui.jsx'
 import { useState, useMemo } from 'react'
 
+const CATS = [
+  {id:'', label:'Toutes', icon:'🌟'},
+  {id:'mer', label:'Mer', icon:'🌊'},
+  {id:'culture', label:'Culture', icon:'🎨'},
+  {id:'atelier', label:'Ateliers', icon:'👨‍🎨'},
+  {id:'nature', label:'Nature', icon:'🏔️'},
+]
+
 export default function Results(){
   const [sp, setSp] = useSearchParams()
   const q = sp.get('q')||''
@@ -42,16 +50,82 @@ export default function Results(){
       </div>
 
       <div style={{maxWidth: 1100, margin: '0 auto', padding: '0 16px'}}>
+        {/* Onglets Catégories */}
+        <div style={{marginBottom: 24}}>
+          <div style={{
+            display: 'flex',
+            gap: 0,
+            borderBottom: '2px solid var(--bord)',
+            overflowX: 'auto',
+            WebkitOverflowScrolling: 'touch',
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none',
+            paddingBottom: 0,
+            background: 'white',
+            borderRadius: '12px 12px 0 0',
+            padding: '0 8px'
+          }}
+          className="tabs-container"
+          >
+            <style>{`
+              .tabs-container::-webkit-scrollbar {
+                display: none;
+              }
+            `}</style>
+            {CATS.map(c=>(
+              <button
+                key={c.id}
+                onClick={()=>update('category', c.id)}
+                style={{
+                  padding: '14px 20px',
+                  fontSize: '0.95rem',
+                  fontWeight: state.category === c.id ? 700 : 600,
+                  background: state.category === c.id ? 'var(--azur)' : 'transparent',
+                  border: 'none',
+                  borderBottom: state.category === c.id ? '3px solid var(--azur)' : '3px solid transparent',
+                  color: state.category === c.id ? '#fff' : 'var(--gris)',
+                  cursor: 'pointer',
+                  whiteSpace: 'nowrap',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 8,
+                  transition: 'all 0.2s',
+                  position: 'relative',
+                  bottom: '-2px',
+                  borderRadius: '8px 8px 0 0',
+                  marginRight: 4
+                }}
+                onMouseEnter={(e) => {
+                  if (state.category !== c.id) {
+                    e.currentTarget.style.color = 'var(--azur)';
+                    e.currentTarget.style.background = 'rgba(43,116,255,0.08)';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (state.category !== c.id) {
+                    e.currentTarget.style.color = 'var(--gris)';
+                    e.currentTarget.style.background = 'transparent';
+                  }
+                }}
+              >
+                <span style={{fontSize: '1.2rem'}}>{c.icon}</span>
+                <span>{c.label}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+
         {/* Barre de filtres */}
         <div style={{
           background: 'white',
           border: '1px solid var(--bord)',
-          borderRadius: 16,
+          borderTop: 'none',
+          borderRadius: '0 0 16px 16px',
           padding: 24,
           marginBottom: 32,
           boxShadow: 'var(--shadow)'
         }}>
-          <div className="searchbar-responsive searchbar-5">
+          <div className="searchbar-responsive searchbar-4">
             <Input
               placeholder="Mot-clé (ex: voile, musée, spa…)"
               value={state.q}
@@ -64,17 +138,6 @@ export default function Results(){
               onChange={e=>update('city', e.target.value)}
               style={{border: '1px solid var(--bord)'}}
             />
-            <Select
-              value={state.category}
-              onChange={e=>update('category', e.target.value)}
-              style={{border: '1px solid var(--bord)'}}
-            >
-              <option value="">Toutes catégories</option>
-              <option value="mer">🌊 Mer</option>
-              <option value="culture">🎨 Culture</option>
-              <option value="atelier">👨‍🎨 Ateliers</option>
-              <option value="nature">🏔️ Nature</option>
-            </Select>
             <Select
               value={state.stars}
               onChange={e=>update('stars', e.target.value)}
