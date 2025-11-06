@@ -4,9 +4,9 @@ import { AppRoutes } from './router.jsx'
 
 export default function App() {
   return (
-    <div className="app-shell">
+    <div className="app-shell" style={{width: '100%', maxWidth: '100vw', overflowX: 'hidden'}}>
       <Navbar />
-      <main className="page">
+      <main className="page" style={{width: '100%', maxWidth: '100%', overflowX: 'hidden'}}>
         <AppRoutes />
       </main>
       <Footer />
